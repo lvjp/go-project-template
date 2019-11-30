@@ -1,6 +1,9 @@
 # CI pipeline output folder
 /dist/
 
+# Local go-cache when run inside local docker
+/.go-cache/
+
 # -*- GitHub Ignore repository 'Go.gitignore@5c5a1b536b6f9bf11515518f03d58addaf29f681' -*- #
 # Binaries for programs and plugins
 *.exe

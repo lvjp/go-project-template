@@ -23,6 +23,9 @@ cd "$(realpath "$(dirname "$0")/../../../..")"
 . ./build/ci/nutshell/scripts/functions.sh
 
 goBootstrap
-goGet golang.org/x/lint/golint@v0.0.0-20190930215403-16217165b5de
+
+command -v golint > /dev/null 2>&1 || {
+  goGet golang.org/x/lint/golint@v0.0.0-20190930215403-16217165b5de
+}
 
 golint -set_exit_status ./...

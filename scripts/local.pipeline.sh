@@ -33,6 +33,8 @@ dockerRun() {
 
 dockerRunGolang() {
   dockerRun \
+    --env GOPATH=/go \
+    --volume "${PWD}/.go-cache:/go" \
     golang:1.13.4-buster \
     "$@"
 }
