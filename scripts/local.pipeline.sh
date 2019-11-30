@@ -31,5 +31,14 @@ dockerRun() {
     "$@"
 }
 
+dockerRun golang:1.13.4-buster ./build/ci/nutshell/jobs/go-test.sh
+
 dockerRun koalaman/shellcheck-alpine:v0.7.0 ./build/ci/nutshell/jobs/shellcheck.sh
 dockerRun --entrypoint sh mvdan/shfmt:v2.6.4 ./build/ci/nutshell/jobs/shfmt.sh
+
+dockerRun golang:1.13.4-buster ./build/ci/nutshell/jobs/go-mod-tidy.sh
+dockerRun golang:1.13.4-buster ./build/ci/nutshell/jobs/go-fmt.sh
+dockerRun golangci/golangci-lint:v1.21-alpine ./build/ci/nutshell/jobs/go-golangci-lint.sh
+dockerRun golang:1.13.4-buster ./build/ci/nutshell/jobs/go-lint.sh
+
+echo Done

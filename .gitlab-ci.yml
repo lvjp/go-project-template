@@ -13,17 +13,85 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+stages:
+  - sanity
+  - check
+  - pages
+
 variables:
   PI_DEBUG_TRACE: "true"
 
 shellcheck:
+  stage: sanity
   image: koalaman/shellcheck-alpine:v0.7.0
   script:
     - ./build/ci/nutshell/jobs/shellcheck.sh
 
 shfmt:
+  stage: sanity
   image:
     name: mvdan/shfmt:v2.6.4
     entrypoint: [""]
   script:
     - ./build/ci/nutshell/jobs/shfmt.sh
+
+.go:
+  image: golang:1.13.4-buster
+
+go:mod:tidy:
+  stage: check
+  extends: .go
+  script:
+    - ./build/ci/nutshell/jobs/go-mod-tidy.sh
+
+go:vet:
+  stage: check
+  extends: .go
+  script:
+    - ./build/ci/nutshell/jobs/go-vet.sh
+
+go:fmt:
+  stage: check
+  extends: .go
+  script:
+    - ./build/ci/nutshell/jobs/go-fmt.sh
+
+go:golangci-lint:
+  stage: check
+  extends: .go
+  image: golangci/golangci-lint:v1.21.0-alpine
+  script:
+    - ./build/ci/nutshell/jobs/go-golangci-lint.sh
+
+go:lint:
+  stage: check
+  extends: .go
+  script:
+    - ./build/ci/nutshell/jobs/go-lint.sh
+  allow_failure: true
+
+go:test:
+  stage: check
+  extends: .go
+  script:
+    - ./build/ci/nutshell/jobs/go-test.sh
+  artifacts:
+    paths:
+      - dist
+    when: always
+  coverage: '/total:\t+\(statements\)\t+(\d+\.\d+)%/'
+
+pages:
+  stage: pages
+  image: busybox:1.31.1
+  script:
+    - mkdir public
+    - mv dist/coverage.html public/index.html
+  artifacts:
+    paths:
+      - public
+  variables:
+    GIT_STRATEGY: none
+  only:
+    refs:
+      - master
