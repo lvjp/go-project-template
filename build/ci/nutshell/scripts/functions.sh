@@ -24,21 +24,3 @@ goBootstrap() {
   go mod download
   go mod verify
 }
-
-# A little workaround to prevent local go.mod/go.sum update
-# This can be useful for external tool fetching.
-goGet() {
-  if [ $# -lt 1 ]; then
-    echo "Usage: <args to go get>"
-    return 1
-  fi
-
-  cd "$(go env GOPATH)"
-
-  if [ "${PI_DEBUG_TRACE}" = "true" ]; then
-    set -- -v "$@"
-  fi
-  go get "$@"
-
-  cd -
-}

@@ -47,6 +47,6 @@ dockerRun --entrypoint sh mvdan/shfmt:v2.6.4 ./build/ci/nutshell/jobs/shfmt.sh
 dockerRunGolang ./build/ci/nutshell/jobs/go-mod-tidy.sh
 dockerRunGolang ./build/ci/nutshell/jobs/go-fmt.sh
 dockerRun golangci/golangci-lint:v1.21-alpine ./build/ci/nutshell/jobs/go-golangci-lint.sh
-dockerRunGolang ./build/ci/nutshell/jobs/go-lint.sh
+dockerRun --entrypoint sh registry.gitlab.com/lvjp/docker-golint:alpine ./build/ci/nutshell/jobs/go-lint.sh
 
 echo Done

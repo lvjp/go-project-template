@@ -76,14 +76,12 @@ go:golangci-lint:
 
 go:lint:
   stage: check
-  extends: .go
+  image:
+    name: registry.gitlab.com/lvjp/docker-golint:alpine
+    entrypoint: [""]
   script:
     - ./build/ci/nutshell/jobs/go-lint.sh
   allow_failure: true
-  after_script:
-    - ./build/ci/gitlab/gocache.backup.sh
-  cache:
-    policy: pull-push
 
 go:test:
   stage: check

@@ -20,12 +20,5 @@ set -o nounset
 cd "$(realpath "$(dirname "$0")/../../../..")"
 
 . ./build/ci/nutshell/scripts/bootstrap.sh
-. ./build/ci/nutshell/scripts/functions.sh
-
-goBootstrap
-
-command -v golint > /dev/null 2>&1 || {
-  goGet golang.org/x/lint/golint@v0.0.0-20190930215403-16217165b5de
-}
 
 golint -set_exit_status ./...
