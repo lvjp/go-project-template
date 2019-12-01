@@ -15,6 +15,7 @@
 
 stages:
   - sanity
+  - go-mod
   - check
   - pages
 
@@ -37,12 +38,22 @@ shfmt:
 
 .go:
   image: golang:1.13.4-buster
+  before_script:
+    - ./build/ci/gitlab/gocache.restore.sh
+  cache:
+    paths:
+      - .go-cache/
+    policy: pull
 
 go:mod:tidy:
-  stage: check
+  stage: go-mod
   extends: .go
   script:
     - ./build/ci/nutshell/jobs/go-mod-tidy.sh
+  after_script:
+    - ./build/ci/gitlab/gocache.backup.sh
+  cache:
+    policy: pull-push
 
 go:vet:
   stage: check
@@ -69,6 +80,10 @@ go:lint:
   script:
     - ./build/ci/nutshell/jobs/go-lint.sh
   allow_failure: true
+  after_script:
+    - ./build/ci/gitlab/gocache.backup.sh
+  cache:
+    policy: pull-push
 
 go:test:
   stage: check
