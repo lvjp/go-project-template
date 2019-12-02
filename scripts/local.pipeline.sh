@@ -54,4 +54,10 @@ dockerRunGolang ./build/ci/nutshell/jobs/go-fmt.sh
 dockerRunCached golangci/golangci-lint:v1.21-alpine ./build/ci/nutshell/jobs/go-golangci-lint.sh
 dockerRunCached --entrypoint sh registry.gitlab.com/lvjp/docker-golint:alpine ./build/ci/nutshell/jobs/go-lint.sh
 
+dockerRun \
+  --entrypoint bash \
+  --env "SONAR_TOKEN=${SONAR_TOKEN:-}" \
+  registry.gitlab.com/lvjp/docker-sonar-scanner:latest \
+  ./build/ci/nutshell/jobs/sonar-scanner.sh
+
 echo Done

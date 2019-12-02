@@ -94,6 +94,14 @@ go:test:
     when: always
   coverage: '/total:\t+\(statements\)\t+(\d+\.\d+)%/'
 
+sonar-scanner:
+  stage: check
+  image:
+    name: registry.gitlab.com/lvjp/docker-sonar-scanner:latest
+    entrypoint: [""]
+  script:
+    - ./build/ci/nutshell/jobs/sonar-scanner.sh
+
 pages:
   stage: pages
   image: busybox:1.31.1
