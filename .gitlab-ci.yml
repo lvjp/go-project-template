@@ -17,6 +17,7 @@ stages:
   - sanity
   - go-mod
   - check
+  - sonar
   - pages
 
 variables:
@@ -95,7 +96,7 @@ go:test:
   coverage: '/total:\t+\(statements\)\t+(\d+\.\d+)%/'
 
 sonar-scanner:
-  stage: check
+  stage: sonar
   image:
     name: registry.gitlab.com/lvjp/docker-sonar-scanner:latest
     entrypoint: [""]
