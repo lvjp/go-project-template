@@ -31,10 +31,15 @@ dockerRun() {
     "$@"
 }
 
-dockerRunGolang() {
+dockerRunCached() {
   dockerRun \
     --env GOPATH=/go \
     --volume "${PWD}/.go-cache:/go" \
+    "$@"
+}
+
+dockerRunGolang() {
+  dockerRunCached \
     golang:1.13.4-buster \
     "$@"
 }
@@ -46,7 +51,7 @@ dockerRun --entrypoint sh mvdan/shfmt:v2.6.4 ./build/ci/nutshell/jobs/shfmt.sh
 
 dockerRunGolang ./build/ci/nutshell/jobs/go-mod-tidy.sh
 dockerRunGolang ./build/ci/nutshell/jobs/go-fmt.sh
-dockerRun golangci/golangci-lint:v1.21-alpine ./build/ci/nutshell/jobs/go-golangci-lint.sh
-dockerRun --entrypoint sh registry.gitlab.com/lvjp/docker-golint:alpine ./build/ci/nutshell/jobs/go-lint.sh
+dockerRunCached golangci/golangci-lint:v1.21-alpine ./build/ci/nutshell/jobs/go-golangci-lint.sh
+dockerRunCached --entrypoint sh registry.gitlab.com/lvjp/docker-golint:alpine ./build/ci/nutshell/jobs/go-lint.sh
 
 echo Done
