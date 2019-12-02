@@ -26,4 +26,4 @@ if [ -z "${SONAR_TOKEN:-}" ]; then
   exit
 fi
 
-sonar-scanner
+sonar-scanner "$@"

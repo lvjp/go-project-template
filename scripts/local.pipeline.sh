@@ -58,6 +58,7 @@ dockerRun \
   --entrypoint bash \
   --env "SONAR_TOKEN=${SONAR_TOKEN:-}" \
   registry.gitlab.com/lvjp/docker-sonar-scanner:latest \
-  ./build/ci/nutshell/jobs/sonar-scanner.sh
+  ./build/ci/nutshell/jobs/sonar-scanner.sh \
+  -Dsonar.branch.name=local
 
 echo Done
