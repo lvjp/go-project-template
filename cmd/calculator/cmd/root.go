@@ -13,12 +13,24 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-package main
+package cmd
 
 import (
-	"gitlab.com/lvjp/go-project-template/cmd/calculator/cmd"
+	"fmt"
+	"github.com/spf13/cobra"
+	"os"
 )
 
-func main() {
-	cmd.Execute()
+var rootCmd = &cobra.Command{
+	Use:   "calculator",
+	Short: "Calculator can compute all four basic operations",
+	Args:  cobra.ExactArgs(3),
+}
+
+// Execute the cobra root command.
+func Execute() {
+	if err := rootCmd.Execute(); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 }
