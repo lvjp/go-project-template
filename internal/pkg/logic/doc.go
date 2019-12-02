@@ -13,12 +13,5 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-package main
-
-import (
-	"gitlab.com/lvjp/go-project-template/cmd/calculator/cmd"
-)
-
-func main() {
-	cmd.Execute()
-}
+// Package logic implement algorithm of the calculator.
+package logic
