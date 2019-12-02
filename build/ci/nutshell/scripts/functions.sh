@@ -21,6 +21,9 @@ goBootstrap() {
   export GO111MODULE=on
   go version
   go env GOPATH
-  go mod download
-  go mod verify
+
+  if [ "${PI_SERVER}" = "true" ]; then
+    go mod download
+    go mod verify
+  fi
 }
