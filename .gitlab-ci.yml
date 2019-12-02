@@ -1,0 +1,110 @@
+# Copyright (C) 2019 VERDOÏA Laurent
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+stages:
+  - sanity
+  - go-mod
+  - check
+  - pages
+
+variables:
+  PI_DEBUG_TRACE: "true"
+
+shellcheck:
+  stage: sanity
+  image: koalaman/shellcheck-alpine:v0.7.0
+  script:
+    - ./build/ci/nutshell/jobs/shellcheck.sh
+
+shfmt:
+  stage: sanity
+  image:
+    name: mvdan/shfmt:v2.6.4
+    entrypoint: [""]
+  script:
+    - ./build/ci/nutshell/jobs/shfmt.sh
+
+.go:
+  image: golang:1.13.4-buster
+  before_script:
+    - ./build/ci/gitlab/gocache.restore.sh
+  cache:
+    paths:
+      - .go-cache/
+    policy: pull
+
+go:mod:tidy:
+  stage: go-mod
+  extends: .go
+  script:
+    - ./build/ci/nutshell/jobs/go-mod-tidy.sh
+  after_script:
+    - ./build/ci/gitlab/gocache.backup.sh
+  cache:
+    policy: pull-push
+
+go:vet:
+  stage: check
+  extends: .go
+  script:
+    - ./build/ci/nutshell/jobs/go-vet.sh
+
+go:fmt:
+  stage: check
+  extends: .go
+  script:
+    - ./build/ci/nutshell/jobs/go-fmt.sh
+
+go:golangci-lint:
+  stage: check
+  extends: .go
+  image: golangci/golangci-lint:v1.21.0-alpine
+  script:
+    - ./build/ci/nutshell/jobs/go-golangci-lint.sh
+
+go:lint:
+  stage: check
+  image:
+    name: registry.gitlab.com/lvjp/docker-golint:alpine
+    entrypoint: [""]
+  script:
+    - ./build/ci/nutshell/jobs/go-lint.sh
+  allow_failure: true
+
+go:test:
+  stage: check
+  extends: .go
+  script:
+    - ./build/ci/nutshell/jobs/go-test.sh
+  artifacts:
+    paths:
+      - dist
+    when: always
+  coverage: '/total:\t+\(statements\)\t+(\d+\.\d+)%/'
+
+pages:
+  stage: pages
+  image: busybox:1.31.1
+  script:
+    - mkdir public
+    - mv dist/coverage.html public/index.html
+  artifacts:
+    paths:
+      - public
+  variables:
+    GIT_STRATEGY: none
+  only:
+    refs:
+      - master
