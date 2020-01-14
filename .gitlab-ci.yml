@@ -102,6 +102,8 @@ sonar-scanner:
     entrypoint: [""]
   script:
     - ./build/ci/nutshell/jobs/sonar-scanner.sh
+  variables:
+    GIT_DEPTH: 0
 
 pages:
   stage: pages
