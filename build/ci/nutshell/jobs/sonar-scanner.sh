@@ -26,9 +26,4 @@ if [ -z "${SONAR_TOKEN:-}" ]; then
   exit
 fi
 
-if [ "${PI_PLATFORM}" = "gitlab" ]; then
-  # Sonar need merge reference to be present during branch analysis.
-  git fetch --depth=1 origin master
-fi
-
 sonar-scanner "$@"
