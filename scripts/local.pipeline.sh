@@ -44,21 +44,21 @@ dockerRunGolang() {
     "$@"
 }
 
-dockerRunGolang ./build/ci/nutshell/jobs/go-test.sh
+dockerRunGolang ./build/ci/shared/jobs/go-test.sh
 
-dockerRun koalaman/shellcheck-alpine:v0.7.0 ./build/ci/nutshell/jobs/shellcheck.sh
-dockerRun --entrypoint sh mvdan/shfmt:v2.6.4 ./build/ci/nutshell/jobs/shfmt.sh
+dockerRun koalaman/shellcheck-alpine:v0.7.0 ./build/ci/shared/jobs/shellcheck.sh
+dockerRun --entrypoint sh mvdan/shfmt:v2.6.4 ./build/ci/shared/jobs/shfmt.sh
 
-dockerRunGolang ./build/ci/nutshell/jobs/go-mod-tidy.sh
-dockerRunGolang ./build/ci/nutshell/jobs/go-fmt.sh
-dockerRunCached golangci/golangci-lint:v1.21-alpine ./build/ci/nutshell/jobs/go-golangci-lint.sh
-dockerRunCached --entrypoint sh registry.gitlab.com/lvjp/docker-golint:alpine ./build/ci/nutshell/jobs/go-lint.sh
+dockerRunGolang ./build/ci/shared/jobs/go-mod-tidy.sh
+dockerRunGolang ./build/ci/shared/jobs/go-fmt.sh
+dockerRunCached golangci/golangci-lint:v1.21-alpine ./build/ci/shared/jobs/go-golangci-lint.sh
+dockerRunCached --entrypoint sh registry.gitlab.com/lvjp/docker-golint:alpine ./build/ci/shared/jobs/go-lint.sh
 
 dockerRun \
   --entrypoint bash \
   --env "SONAR_TOKEN=${SONAR_TOKEN:-}" \
   registry.gitlab.com/lvjp/docker-sonar-scanner:latest \
-  ./build/ci/nutshell/jobs/sonar-scanner.sh \
+  ./build/ci/shared/jobs/sonar-scanner.sh \
   -Dsonar.branch.name=local
 
 echo Done

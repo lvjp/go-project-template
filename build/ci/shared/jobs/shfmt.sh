@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/bin/env sh
 # Copyright (C) 2019 VERDOÏA Laurent
 #
 # This program is free software: you can redistribute it and/or modify
@@ -19,11 +19,12 @@ set -o nounset
 
 cd "$(realpath "$(dirname "$0")/../../../..")"
 
-. ./build/ci/nutshell/scripts/init.sh
+. ./build/ci/shared/scripts/init.sh
 
-if [ -z "${SONAR_TOKEN:-}" ]; then
-  echo "SONAR_TOKEN not found. Skip analysis."
-  exit
-fi
+fileList=$(mktemp)
 
-sonar-scanner "$@"
+trap 'rm "${fileList}"' EXIT
+
+# Since there 'set -o pipefail' is not defined in POSIX sh, we use a temporary file instead of a pipe.
+find . '(' -path ./.git -or -path ./.go-cache ')' -prune -or -type f -name '*.sh' -print0 > "${fileList}"
+xargs -0 shfmt -d -i 2 -ci -sr < "${fileList}"

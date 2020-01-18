@@ -19,12 +19,11 @@ set -o nounset
 
 cd "$(realpath "$(dirname "$0")/../../../..")"
 
-. ./build/ci/nutshell/scripts/init.sh
-. ./build/ci/nutshell/scripts/functions.sh
+. ./build/ci/shared/scripts/init.sh
 
-goBootstrap
-
-if [ -n "$(gofmt -l -s ./*/)" ]; then
-  gofmt -d -s ./*/
-  exit 1
+if [ -z "${SONAR_TOKEN:-}" ]; then
+  echo "SONAR_TOKEN not found. Skip analysis."
+  exit
 fi
+
+sonar-scanner "$@"

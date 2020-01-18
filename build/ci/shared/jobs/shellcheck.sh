@@ -19,10 +19,17 @@ set -o nounset
 
 cd "$(realpath "$(dirname "$0")/../../../..")"
 
-. ./build/ci/nutshell/scripts/init.sh
-. ./build/ci/nutshell/scripts/functions.sh
+. ./build/ci/shared/scripts/init.sh
 
-goBootstrap
+fileList=$(mktemp)
 
-golangci-lint --version
-golangci-lint run
+trap 'rm "${fileList}"' EXIT
+
+# Since there 'set -o pipefail' is not defined in POSIX sh, we use a temporary file instead of a pipe.
+find . '(' -path ./.git -or -path ./.go-cache ')' -prune -or -type f -name '*.sh' -print0 > "${fileList}"
+xargs -0 shellcheck \
+  --external-sources \
+  --check-sourced \
+  --enable=add-default-case \
+  --enable=require-variable-braces \
+  < "${fileList}"
