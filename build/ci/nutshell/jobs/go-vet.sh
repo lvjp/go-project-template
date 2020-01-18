@@ -19,7 +19,7 @@ set -o nounset
 
 cd "$(realpath "$(dirname "$0")/../../../..")"
 
-. ./build/ci/nutshell/scripts/bootstrap.sh
+. ./build/ci/nutshell/scripts/init.sh
 . ./build/ci/nutshell/scripts/functions.sh
 
 goBootstrap

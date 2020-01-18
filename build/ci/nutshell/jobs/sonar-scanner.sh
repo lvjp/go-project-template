@@ -19,7 +19,7 @@ set -o nounset
 
 cd "$(realpath "$(dirname "$0")/../../../..")"
 
-. ./build/ci/nutshell/scripts/bootstrap.sh
+. ./build/ci/nutshell/scripts/init.sh
 
 if [ -z "${SONAR_TOKEN:-}" ]; then
   echo "SONAR_TOKEN not found. Skip analysis."
