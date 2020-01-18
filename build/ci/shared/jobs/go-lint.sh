@@ -19,16 +19,6 @@ set -o nounset
 
 cd "$(realpath "$(dirname "$0")/../../../..")"
 
-. ./build/ci/nutshell/scripts/bootstrap.sh
+. ./build/ci/shared/scripts/init.sh
 
-if [ -z "${SONAR_TOKEN:-}" ]; then
-  echo "SONAR_TOKEN not found. Skip analysis."
-  exit
-fi
-
-if [ "${PI_PLATFORM}" = "gitlab" ]; then
-  # Sonar need merge reference to be present during branch analysis.
-  git fetch --depth=1 origin master
-fi
-
-sonar-scanner "$@"
+golint -set_exit_status ./...

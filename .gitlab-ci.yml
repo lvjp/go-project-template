@@ -27,7 +27,7 @@ shellcheck:
   stage: sanity
   image: koalaman/shellcheck-alpine:v0.7.0
   script:
-    - ./build/ci/nutshell/jobs/shellcheck.sh
+    - ./build/ci/shared/jobs/shellcheck.sh
 
 shfmt:
   stage: sanity
@@ -35,7 +35,7 @@ shfmt:
     name: mvdan/shfmt:v2.6.4
     entrypoint: [""]
   script:
-    - ./build/ci/nutshell/jobs/shfmt.sh
+    - ./build/ci/shared/jobs/shfmt.sh
 
 .go:
   image: golang:1.13.4-buster
@@ -50,7 +50,7 @@ go:mod:tidy:
   stage: go-mod
   extends: .go
   script:
-    - ./build/ci/nutshell/jobs/go-mod-tidy.sh
+    - ./build/ci/shared/jobs/go-mod-tidy.sh
   after_script:
     - ./build/ci/gitlab/gocache.backup.sh
   cache:
@@ -60,20 +60,20 @@ go:vet:
   stage: check
   extends: .go
   script:
-    - ./build/ci/nutshell/jobs/go-vet.sh
+    - ./build/ci/shared/jobs/go-vet.sh
 
 go:fmt:
   stage: check
   extends: .go
   script:
-    - ./build/ci/nutshell/jobs/go-fmt.sh
+    - ./build/ci/shared/jobs/go-fmt.sh
 
 go:golangci-lint:
   stage: check
   extends: .go
   image: golangci/golangci-lint:v1.21.0-alpine
   script:
-    - ./build/ci/nutshell/jobs/go-golangci-lint.sh
+    - ./build/ci/shared/jobs/go-golangci-lint.sh
 
 go:lint:
   stage: check
@@ -81,14 +81,14 @@ go:lint:
     name: registry.gitlab.com/lvjp/docker-golint:alpine
     entrypoint: [""]
   script:
-    - ./build/ci/nutshell/jobs/go-lint.sh
+    - ./build/ci/shared/jobs/go-lint.sh
   allow_failure: true
 
 go:test:
   stage: check
   extends: .go
   script:
-    - ./build/ci/nutshell/jobs/go-test.sh
+    - ./build/ci/shared/jobs/go-test.sh
   artifacts:
     paths:
       - dist
@@ -101,7 +101,9 @@ sonar-scanner:
     name: registry.gitlab.com/lvjp/docker-sonar-scanner:latest
     entrypoint: [""]
   script:
-    - ./build/ci/nutshell/jobs/sonar-scanner.sh
+    - ./build/ci/shared/jobs/sonar-scanner.sh
+  variables:
+    GIT_DEPTH: 0
 
 pages:
   stage: pages

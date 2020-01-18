@@ -19,9 +19,12 @@ set -o nounset
 
 cd "$(realpath "$(dirname "$0")/../../../..")"
 
-. ./build/ci/nutshell/scripts/bootstrap.sh
-. ./build/ci/nutshell/scripts/functions.sh
+. ./build/ci/shared/scripts/init.sh
+. ./build/ci/shared/scripts/functions.sh
 
 goBootstrap
 
-go vet ./...
+if [ -n "$(gofmt -l -s ./*/)" ]; then
+  gofmt -d -s ./*/
+  exit 1
+fi

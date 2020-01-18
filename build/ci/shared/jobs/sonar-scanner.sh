@@ -19,26 +19,11 @@ set -o nounset
 
 cd "$(realpath "$(dirname "$0")/../../../..")"
 
-. ./build/ci/nutshell/scripts/bootstrap.sh
-. ./build/ci/nutshell/scripts/functions.sh
+. ./build/ci/shared/scripts/init.sh
 
-goBootstrap
+if [ -z "${SONAR_TOKEN:-}" ]; then
+  echo "SONAR_TOKEN not found. Skip analysis."
+  exit
+fi
 
-mkdir -p dist
-
-goTest() {
-  if [ "${PI_DEBUG_TRACE}" = "true" ]; then
-    set -- -v "$@"
-  fi
-
-  set +e
-  go test "$@"
-  testStatus=$?
-  set -e
-}
-
-goTest -coverpkg=./... -coverprofile=dist/coverage.out -bench=. ./...
-go tool cover -func=dist/coverage.out
-go tool cover -html=dist/coverage.out -o dist/coverage.html
-
-exit ${testStatus}
+sonar-scanner "$@"

@@ -19,7 +19,7 @@ set -o nounset
 
 cd "$(realpath "$(dirname "$0")/../../..")"
 
-. ./build/ci/nutshell/scripts/bootstrap.sh
+. ./build/ci/shared/scripts/init.sh
 
 GOPATH=$(go env GOPATH)
 

@@ -1,4 +1,4 @@
-#!/bin/env sh
+#!/usr/bin/env sh
 # Copyright (C) 2019 VERDOÏA Laurent
 #
 # This program is free software: you can redistribute it and/or modify
@@ -19,12 +19,9 @@ set -o nounset
 
 cd "$(realpath "$(dirname "$0")/../../../..")"
 
-. ./build/ci/nutshell/scripts/bootstrap.sh
+. ./build/ci/shared/scripts/init.sh
+. ./build/ci/shared/scripts/functions.sh
 
-fileList=$(mktemp)
+goBootstrap
 
-trap 'rm "${fileList}"' EXIT
-
-# Since there 'set -o pipefail' is not defined in POSIX sh, we use a temporary file instead of a pipe.
-find . '(' -path ./.git -or -path ./.go-cache ')' -prune -or -type f -name '*.sh' -print0 > "${fileList}"
-xargs -0 shfmt -d -i 2 -ci -sr < "${fileList}"
+go vet ./...

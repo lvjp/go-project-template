@@ -19,10 +19,10 @@ set -o nounset
 
 cd "$(realpath "$(dirname "$0")/../../../..")"
 
-. ./build/ci/nutshell/scripts/bootstrap.sh
-. ./build/ci/nutshell/scripts/functions.sh
+. ./build/ci/shared/scripts/init.sh
+. ./build/ci/shared/scripts/functions.sh
 
 goBootstrap
 
-go mod tidy
-test -z "$(git diff --name-only go.mod go.sum)"
+golangci-lint --version
+golangci-lint run
