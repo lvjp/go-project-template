@@ -1,9 +1,6 @@
 # CI pipeline output folder
 /dist/
 
-# Local go-cache when run inside local docker
-/.go-cache/
-
 # Sonar scaner
 /.scannerwork/
 
