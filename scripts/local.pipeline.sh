@@ -57,7 +57,7 @@ dockerRunCached --entrypoint sh registry.gitlab.com/lvjp/docker-golint:alpine ./
 dockerRun \
   --entrypoint bash \
   --env "SONAR_TOKEN=${SONAR_TOKEN:-}" \
-  registry.gitlab.com/lvjp/docker-sonar-scanner:latest \
+  sonarsource/sonar-scanner-cli:4.2 \
   ./build/ci/shared/jobs/sonar-scanner.sh \
   -Dsonar.branch.name=local
 
