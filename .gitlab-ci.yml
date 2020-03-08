@@ -43,7 +43,7 @@ shfmt:
     - ./build/ci/gitlab/gocache.restore.sh
   cache:
     paths:
-      - .go-cache/
+      - .cache/
     policy: pull
 
 go:mod:tidy:
