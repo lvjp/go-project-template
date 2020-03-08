@@ -33,14 +33,14 @@ dockerRun() {
 
 # Run inside a docker with a cached GOPATH.
 # If local and docker arch is same, reuse local $(go env GOPATH) folder.
-# If not, use ${HOME}/.go-cache/OS/Arch instead.
+# If not, use ${HOME}/.cache/go/OS/Arch instead.
 dockerRunCached() {
   local client
   client=$(docker version --format '{{.Client.Os}}/{{.Client.Arch}}')
   local server
   server=$(docker version --format '{{.Server.Os}}/{{.Server.Arch}}')
 
-  if [ "${client}" = "${server}" ]; then
+  if [ "${client}" = "${server}" ] && command -v go &> /dev/null; then
     folder=$(go env GOPATH)
     if [ -z "${folder}" ]; then
       # shellcheck disable=SC2016
@@ -48,7 +48,7 @@ dockerRunCached() {
       exit 1
     fi
   else
-    folder="${HOME}/.go-cache/${server}"
+    folder="${HOME}/.cache/go/${server}"
     if [ ! -d "${folder}" ]; then
       mkdir -p "${folder}"
     fi

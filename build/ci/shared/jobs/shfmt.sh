@@ -26,5 +26,5 @@ fileList=$(mktemp)
 trap 'rm "${fileList}"' EXIT
 
 # Since there 'set -o pipefail' is not defined in POSIX sh, we use a temporary file instead of a pipe.
-find . '(' -path ./.git -or -path ./.go-cache ')' -prune -or -type f -name '*.sh' -print0 > "${fileList}"
+find . '(' -path ./.git -or -path ./.cache ')' -prune -or -type f -name '*.sh' -print0 > "${fileList}"
 xargs -0 shfmt -d -i 2 -ci -sr < "${fileList}"
