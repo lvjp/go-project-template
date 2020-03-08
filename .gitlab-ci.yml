@@ -40,7 +40,9 @@ shfmt:
 .go:
   image: golang:1.13.4-buster
   before_script:
-    - ./build/ci/gitlab/gocache.restore.sh
+    - rm -rf "${GOPATH}"
+    - mkdir -p .cache/go
+    - ln -svf "${CI_PROJECT_DIR}/.cache/go" "$(dirname ${GOPATH})"
   cache:
     paths:
       - .cache/
@@ -51,8 +53,6 @@ go:mod:tidy:
   extends: .go
   script:
     - ./build/ci/shared/jobs/go-mod-tidy.sh
-  after_script:
-    - ./build/ci/gitlab/gocache.backup.sh
   cache:
     policy: pull-push
 
