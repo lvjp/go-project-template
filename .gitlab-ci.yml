@@ -46,6 +46,10 @@ shfmt:
   cache:
     paths:
       - .cache/
+    key:
+      files:
+        - go.mod
+        - go.sum
     policy: pull
 
 go:mod:tidy:
