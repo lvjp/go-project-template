@@ -40,7 +40,7 @@ dockerRunCached() {
   local server
   server=$(docker version --format '{{.Server.Os}}/{{.Server.Arch}}')
 
-  if [ "${client}" = "${server}" ]; then
+  if [ "${client}" = "${server}" ] && command -v go &> /dev/null; then
     folder=$(go env GOPATH)
     if [ -z "${folder}" ]; then
       # shellcheck disable=SC2016
