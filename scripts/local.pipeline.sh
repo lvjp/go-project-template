@@ -62,24 +62,24 @@ dockerRunCached() {
 
 dockerRunGolang() {
   dockerRunCached \
-    golang:1.13.4-buster \
+    golang:1.14.0-buster \
     "$@"
 }
 
 dockerRunGolang ./build/ci/shared/jobs/go-test.sh
 
 dockerRun koalaman/shellcheck-alpine:v0.7.0 ./build/ci/shared/jobs/shellcheck.sh
-dockerRun --entrypoint sh mvdan/shfmt:v2.6.4 ./build/ci/shared/jobs/shfmt.sh
+dockerRun --entrypoint sh mvdan/shfmt:v3.0.2 ./build/ci/shared/jobs/shfmt.sh
 
 dockerRunGolang ./build/ci/shared/jobs/go-mod-tidy.sh
 dockerRunGolang ./build/ci/shared/jobs/go-fmt.sh
-dockerRunCached golangci/golangci-lint:v1.21-alpine ./build/ci/shared/jobs/go-golangci-lint.sh
+dockerRunCached golangci/golangci-lint:v1.23.8-alpine ./build/ci/shared/jobs/go-golangci-lint.sh
 dockerRunCached --entrypoint sh registry.gitlab.com/lvjp/docker-golint:alpine ./build/ci/shared/jobs/go-lint.sh
 
 dockerRun \
   --entrypoint bash \
   --env "SONAR_TOKEN=${SONAR_TOKEN:-}" \
-  sonarsource/sonar-scanner-cli:4.2 \
+  sonarsource/sonar-scanner-cli:4.3 \
   ./build/ci/shared/jobs/sonar-scanner.sh \
   -Dsonar.branch.name=local
 

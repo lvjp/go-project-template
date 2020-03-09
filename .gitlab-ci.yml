@@ -32,13 +32,13 @@ shellcheck:
 shfmt:
   stage: sanity
   image:
-    name: mvdan/shfmt:v2.6.4
+    name: mvdan/shfmt:v3.0.2
     entrypoint: [""]
   script:
     - ./build/ci/shared/jobs/shfmt.sh
 
 .go:
-  image: golang:1.13.4-buster
+  image: golang:1.14.0-buster
   before_script:
     - rm -rf "${GOPATH}"
     - mkdir -p .cache/go
@@ -75,7 +75,7 @@ go:fmt:
 go:golangci-lint:
   stage: check
   extends: .go
-  image: golangci/golangci-lint:v1.21.0-alpine
+  image: golangci/golangci-lint:v1.23.8-alpine
   script:
     - ./build/ci/shared/jobs/go-golangci-lint.sh
 
@@ -102,7 +102,7 @@ go:test:
 sonar-scanner:
   stage: sonar
   image:
-    name: sonarsource/sonar-scanner-cli:4.2
+    name: sonarsource/sonar-scanner-cli:4.3
     entrypoint: [""]
   script:
     - ./build/ci/shared/jobs/sonar-scanner.sh
@@ -120,6 +120,5 @@ pages:
       - public
   variables:
     GIT_STRATEGY: none
-  only:
-    refs:
-      - master
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
