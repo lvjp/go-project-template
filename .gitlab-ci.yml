@@ -120,6 +120,5 @@ pages:
       - public
   variables:
     GIT_STRATEGY: none
-  only:
-    refs:
-      - master
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
