@@ -3,7 +3,7 @@
 [![GitLab CI](https://gitlab.com/lvjp/go-project-template/badges/master/pipeline.svg)](https://gitlab.com/lvjp/go-project-template/commits/master)
 [![go test Coverage report](https://gitlab.com/lvjp/go-project-template/badges/master/coverage.svg)](https://gitlab.com/lvjp/go-project-template/commits/master)
 [![Sonar Coverage](https://sonarcloud.io/api/project_badges/measure?project=lvjp_go-project-template&metric=coverage)](https://sonarcloud.io/dashboard?id=lvjp_go-project-template)
-[![GoDoc](https://godoc.org/github.com/lvjp/go-project-template?status.svg)](https://godoc.org/github.com/lvjp/go-project-template)
+[![go.dev reference](https://img.shields.io/badge/go.dev-reference-blue?style=flat&logo=go)](https://pkg.go.dev/gitlab.com/lvjp/go-project-template)
 [![Go Report Card](https://goreportcard.com/badge/github.com/lvjp/go-project-template)](https://goreportcard.com/report/github.com/lvjp/go-project-template)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=lvjp_go-project-template&metric=alert_status)](https://sonarcloud.io/dashboard?id=lvjp_go-project-template)
 [![Licence](https://img.shields.io/badge/license-GPL--3.0-brightgreen)](https://gitlab.com/lvjp/go-project-template/blob/master/COPYING.md)
