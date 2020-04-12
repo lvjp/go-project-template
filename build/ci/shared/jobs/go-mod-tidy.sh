@@ -24,5 +24,5 @@ cd "$(realpath "$(dirname "$0")/../../../..")"
 
 goBootstrap
 
-go mod tidy
+go mod tidy -v
 test -z "$(git diff --name-only go.mod go.sum)"
