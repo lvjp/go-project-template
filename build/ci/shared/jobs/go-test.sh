@@ -20,9 +20,6 @@ set -o nounset
 cd "$(realpath "$(dirname "$0")/../../../..")"
 
 . ./build/ci/shared/scripts/init.sh
-. ./build/ci/shared/scripts/functions.sh
-
-goBootstrap
 
 mkdir -p dist
 
@@ -37,7 +34,7 @@ goTest() {
   set -e
 }
 
-goTest -coverpkg=./... -coverprofile=dist/coverage.out -bench=. ./...
+goTest -coverpkg=gitlab.com/lvjp/go-project-template/... -coverprofile=dist/coverage.out -bench=. ./...
 go tool cover -func=dist/coverage.out
 go tool cover -html=dist/coverage.out -o dist/coverage.html
 

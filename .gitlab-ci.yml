@@ -38,19 +38,19 @@ shfmt:
     - ./build/ci/shared/jobs/shfmt.sh
 
 .go:
-  image: golang:1.14.0-buster
+  image: golang:1.14.2-buster
   before_script:
-    - rm -rf "${GOPATH}"
     - mkdir -p .cache/go
-    - ln -svf "${CI_PROJECT_DIR}/.cache/go" "$(dirname ${GOPATH})"
   cache:
     paths:
-      - .cache/
+      - .cache/go/pkg/mod
     key:
       files:
         - go.mod
         - go.sum
     policy: pull
+  variables:
+    GOPATH: ${CI_PROJECT_DIR}/.cache/go
 
 go:mod:tidy:
   stage: go-mod

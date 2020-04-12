@@ -20,9 +20,6 @@ set -o nounset
 cd "$(realpath "$(dirname "$0")/../../../..")"
 
 . ./build/ci/shared/scripts/init.sh
-. ./build/ci/shared/scripts/functions.sh
-
-goBootstrap
 
 if [ -n "$(gofmt -l -s ./*/)" ]; then
   gofmt -d -s ./*/

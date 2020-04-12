@@ -62,7 +62,7 @@ dockerRunCached() {
 
 dockerRunGolang() {
   dockerRunCached \
-    golang:1.14.0-buster \
+    golang:1.14.2-buster \
     "$@"
 }
 

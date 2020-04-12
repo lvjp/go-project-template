@@ -20,8 +20,5 @@ set -o nounset
 cd "$(realpath "$(dirname "$0")/../../../..")"
 
 . ./build/ci/shared/scripts/init.sh
-. ./build/ci/shared/scripts/functions.sh
-
-goBootstrap
 
 go vet ./...

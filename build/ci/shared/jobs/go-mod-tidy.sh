@@ -20,9 +20,10 @@ set -o nounset
 cd "$(realpath "$(dirname "$0")/../../../..")"
 
 . ./build/ci/shared/scripts/init.sh
-. ./build/ci/shared/scripts/functions.sh
 
-goBootstrap
+# Populate the cache
+go mod download
+go mod verify
 
-go mod tidy
+go mod tidy -v
 test -z "$(git diff --name-only go.mod go.sum)"
