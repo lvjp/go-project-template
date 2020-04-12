@@ -38,7 +38,7 @@ shfmt:
     - ./build/ci/shared/jobs/shfmt.sh
 
 .go:
-  image: golang:1.14.0-buster
+  image: golang:1.14.2-buster
   before_script:
     - mkdir -p .cache/go
   cache:
