@@ -20,25 +20,27 @@ stages:
   - sonar
   - pages
 
+default:
+  image: docker:19.03.8-git
+  services:
+    - docker:19.03.8-dind
+
 variables:
   PI_DEBUG_TRACE: "true"
 
 shellcheck:
   stage: sanity
-  image: koalaman/shellcheck-alpine:v0.7.0
   script:
     - ./build/ci/shared/jobs/shellcheck.sh
 
 shfmt:
   stage: sanity
-  image:
-    name: mvdan/shfmt:v3.0.2
-    entrypoint: [""]
   script:
     - ./build/ci/shared/jobs/shfmt.sh
 
 .go:
   image: golang:1.14.2-buster
+  services: []
   before_script:
     - mkdir -p .cache/go
   cache:
@@ -84,6 +86,7 @@ go:lint:
   image:
     name: registry.gitlab.com/lvjp/docker-golint:alpine
     entrypoint: [""]
+  services: []
   script:
     - ./build/ci/shared/jobs/go-lint.sh
   allow_failure: true
@@ -104,6 +107,7 @@ sonar-scanner:
   image:
     name: sonarsource/sonar-scanner-cli:4.3
     entrypoint: [""]
+  services: []
   script:
     - ./build/ci/shared/jobs/sonar-scanner.sh
   variables:
@@ -112,6 +116,7 @@ sonar-scanner:
 pages:
   stage: pages
   image: busybox:1.31.1
+  services: []
   script:
     - mkdir public
     - mv dist/coverage.html public/index.html

@@ -25,11 +25,12 @@ fileList=$(mktemp)
 
 trap 'rm "${fileList}"' EXIT
 
-# Since there 'set -o pipefail' is not defined in POSIX sh, we use a temporary file instead of a pipe.
-find . '(' -path ./.git -or -path ./.cache ')' -prune -or -type f -name '*.sh' -print0 > "${fileList}"
-xargs -0 shellcheck \
+# Since bash 'set -o pipefail' is not defined in POSIX sh, we use a temporary file instead of a pipe.
+git ls-files -z -- '*.sh' > "${fileList}"
+xargs -0 ./build/ci/shared/scripts/docker.sh \
+  koalaman/shellcheck-alpine:v0.7.0 \
+  shellcheck \
   --external-sources \
   --check-sourced \
   --enable=add-default-case \
-  --enable=require-variable-braces \
-  < "${fileList}"
+  --enable=require-variable-braces < "${fileList}"

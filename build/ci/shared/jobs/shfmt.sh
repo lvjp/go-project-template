@@ -1,4 +1,4 @@
-#!/bin/env sh
+#!/usr/bin/env sh
 # Copyright (C) 2019-2020 VERDOÏA Laurent
 #
 # This program is free software: you can redistribute it and/or modify
@@ -25,6 +25,8 @@ fileList=$(mktemp)
 
 trap 'rm "${fileList}"' EXIT
 
-# Since there 'set -o pipefail' is not defined in POSIX sh, we use a temporary file instead of a pipe.
-find . '(' -path ./.git -or -path ./.cache ')' -prune -or -type f -name '*.sh' -print0 > "${fileList}"
-xargs -0 shfmt -d -i 2 -ci -sr < "${fileList}"
+# Since bash 'set -o pipefail' is not defined in POSIX sh, we use a temporary file instead of a pipe.
+git ls-files -z -- '*.sh' > "${fileList}"
+xargs -0 ./build/ci/shared/scripts/docker.sh \
+  mvdan/shfmt:v3.1.0-alpine \
+  shfmt -d -i 2 -ci -sr < "${fileList}"

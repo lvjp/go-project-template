@@ -68,8 +68,8 @@ dockerRunGolang() {
 
 dockerRunGolang ./build/ci/shared/jobs/go-test.sh
 
-dockerRun koalaman/shellcheck-alpine:v0.7.0 ./build/ci/shared/jobs/shellcheck.sh
-dockerRun --entrypoint sh mvdan/shfmt:v3.0.2 ./build/ci/shared/jobs/shfmt.sh
+./build/ci/shared/jobs/shellcheck.sh
+./build/ci/shared/jobs/shfmt.sh
 
 dockerRunGolang ./build/ci/shared/jobs/go-mod-tidy.sh
 dockerRunGolang ./build/ci/shared/jobs/go-fmt.sh
