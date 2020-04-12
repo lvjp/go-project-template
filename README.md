@@ -14,7 +14,7 @@
 
 Full license can be found in the [COPYING.md](COPYING.md) file.
 
-    Copyright (C) 2019 VERDOÏA Laurent
+    Copyright (C) 2019-2020 VERDOÏA Laurent
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
