@@ -28,12 +28,6 @@ echo "Detected CI platform: ${PI_PLATFORM}"
 # shellcheck source=/dev/null
 . ./build/ci/${PI_PLATFORM}/env.sh
 
-case "${PI_PLATFORM}" in
-  localhost) PI_SERVER=false ;;
-  *) PI_SERVER=true ;;
-esac
-export PI_SERVER
-
 case "${PI_DEBUG_TRACE}" in
   true | false) ;;
   yes) PI_DEBUG_TRACE=true ;;
