@@ -31,50 +31,15 @@ dockerRun() {
     "$@"
 }
 
-# Run inside a docker with a cached GOPATH.
-# If local and docker arch is same, reuse local $(go env GOPATH) folder.
-# If not, use ${HOME}/.cache/go/OS/Arch instead.
-dockerRunCached() {
-  local client
-  client=$(docker version --format '{{.Client.Os}}/{{.Client.Arch}}')
-  local server
-  server=$(docker version --format '{{.Server.Os}}/{{.Server.Arch}}')
-
-  if [ "${client}" = "${server}" ] && command -v go &> /dev/null; then
-    folder=$(go env GOPATH)
-    if [ -z "${folder}" ]; then
-      # shellcheck disable=SC2016
-      echo 'Cannot detect $(go env GOPATH)' >&2
-      exit 1
-    fi
-  else
-    folder="${HOME}/.cache/go/${server}"
-    if [ ! -d "${folder}" ]; then
-      mkdir -p "${folder}"
-    fi
-  fi
-
-  dockerRun \
-    --env GOPATH=/go \
-    --volume "${folder}:/go" \
-    "$@"
-}
-
-dockerRunGolang() {
-  dockerRunCached \
-    golang:1.14.2-buster \
-    "$@"
-}
-
 ./build/ci/shared/jobs/go-test.sh
 
 ./build/ci/shared/jobs/shellcheck.sh
 ./build/ci/shared/jobs/shfmt.sh
 
 ./build/ci/shared/jobs/go-mod-tidy.sh
+
 ./build/ci/shared/jobs/go-fmt.sh
 ./build/ci/shared/jobs/go-vet.sh
-
 ./build/ci/shared/jobs/go-golangci-lint.sh
 ./build/ci/shared/jobs/go-lint.sh
 
