@@ -25,8 +25,10 @@ fi
 export PI_PLATFORM
 
 echo "Detected CI platform: ${PI_PLATFORM}"
+. ./build/ci/shared/env.pre.sh
 # shellcheck source=/dev/null
 . ./build/ci/${PI_PLATFORM}/env.sh
+. ./build/ci/shared/env.post.sh
 
 case "${PI_DEBUG_TRACE}" in
   true | false) ;;

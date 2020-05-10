@@ -17,26 +17,18 @@
 set -o errexit
 set -o nounset
 
-cd "$(realpath "$(dirname "$0")/../../../..")"
-
-. ./build/ci/shared/scripts/init.sh
-. ./build/ci/shared/scripts/go.wrapper.sh
-
-mkdir -p dist
-
-goTest() {
-  if [ "${PI_DEBUG_TRACE}" = "true" ]; then
-    set -- -v "$@"
-  fi
-
-  set +e
-  _go test "$@"
-  testStatus=$?
-  set -e
+_goWrapper() {
+  ./build/ci/shared/scripts/docker.sh \
+    --env XDG_CACHE_HOME=/work/.cache \
+    --env GOPATH=/work/.cache/go \
+    golang:1.14.2-buster \
+    "$@"
 }
 
-goTest -coverpkg=gitlab.com/lvjp/go-project-template/... -coverprofile=dist/coverage.out -bench=. ./...
-_go tool cover -func=dist/coverage.out
-_go tool cover -html=dist/coverage.out -o dist/coverage.html
+_go() {
+  _goWrapper go "$@"
+}
 
-exit ${testStatus}
+_gofmt() {
+  _goWrapper gofmt "$@"
+}

@@ -4,6 +4,9 @@
 # Sonar scaner
 /.scannerwork/
 
+# Some cache
+/.cache/
+
 ################################################################################
 # Downloaded from :
 # https://raw.githubusercontent.com/github/gitignore/6c87d249af5f2b3f8ab65ae0a2648682ee4e8a2d/Go.gitignore

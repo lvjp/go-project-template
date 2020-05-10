@@ -20,8 +20,9 @@ set -o nounset
 cd "$(realpath "$(dirname "$0")/../../../..")"
 
 . ./build/ci/shared/scripts/init.sh
+. ./build/ci/shared/scripts/go.wrapper.sh
 
-if [ -n "$(gofmt -l -s ./*/)" ]; then
-  gofmt -d -s ./*/
+if [ -n "$(_gofmt -l -s ./*/)" ]; then
+  _gofmt -d -s ./*/
   exit 1
 fi

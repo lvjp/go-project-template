@@ -66,13 +66,15 @@ dockerRunGolang() {
     "$@"
 }
 
-dockerRunGolang ./build/ci/shared/jobs/go-test.sh
+./build/ci/shared/jobs/go-test.sh
 
 ./build/ci/shared/jobs/shellcheck.sh
 ./build/ci/shared/jobs/shfmt.sh
 
-dockerRunGolang ./build/ci/shared/jobs/go-mod-tidy.sh
-dockerRunGolang ./build/ci/shared/jobs/go-fmt.sh
+./build/ci/shared/jobs/go-mod-tidy.sh
+./build/ci/shared/jobs/go-fmt.sh
+./build/ci/shared/jobs/go-vet.sh
+
 dockerRunCached golangci/golangci-lint:v1.23.8-alpine ./build/ci/shared/jobs/go-golangci-lint.sh
 dockerRunCached --entrypoint sh registry.gitlab.com/lvjp/docker-golint:alpine ./build/ci/shared/jobs/go-lint.sh
 

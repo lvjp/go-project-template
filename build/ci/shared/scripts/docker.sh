@@ -17,6 +17,12 @@
 set -o errexit
 set -o nounset
 
+if [ "${PI_DEBUG_TRACE}" = "true" ]; then
+  set -o xtrace
+fi
+
+# Since docker need absolute path for directory mount,
+# we firstly go to project root.
 cd "$(realpath "$(dirname "$0")/../../../..")"
 
 if [ "${PI_PLATFORM}" = "localhost" ]; then

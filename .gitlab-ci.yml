@@ -39,10 +39,6 @@ shfmt:
     - ./build/ci/shared/jobs/shfmt.sh
 
 .go:
-  image: golang:1.14.2-buster
-  services: []
-  before_script:
-    - mkdir -p .cache/go
   cache:
     paths:
       - .cache/go/pkg/mod
@@ -51,8 +47,6 @@ shfmt:
         - go.mod
         - go.sum
     policy: pull
-  variables:
-    GOPATH: ${CI_PROJECT_DIR}/.cache/go
 
 go:mod:tidy:
   stage: go-mod
@@ -78,8 +72,13 @@ go:golangci-lint:
   stage: check
   extends: .go
   image: golangci/golangci-lint:v1.23.8-alpine
+  services: []
+  before_script:
+    - mkdir -p .cache/go
   script:
     - ./build/ci/shared/jobs/go-golangci-lint.sh
+  variables:
+    GOPATH: ${CI_PROJECT_DIR}/.cache/go
 
 go:lint:
   stage: check
