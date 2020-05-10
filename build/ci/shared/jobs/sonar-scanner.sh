@@ -26,14 +26,4 @@ if [ -z "${SONAR_TOKEN:-}" ]; then
   exit
 fi
 
-if [ "${PI_PLATFORM}" = "localhost" ]; then
-  set -- -Dsonar.branch.name=local "$@"
-fi
-
-# XDG_CONFIG_HOME is a little workaround which kept jgit from create file
-# ?/.config/jgit/config
-
-./build/ci/shared/scripts/docker.sh \
-  --env "SONAR_TOKEN=${SONAR_TOKEN}" \
-  --env XDG_CONFIG_HOME=/tmp \
-  sonarsource/sonar-scanner-cli:4.3 "$@"
+sonar-scanner "$@"

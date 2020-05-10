@@ -93,6 +93,10 @@ go:test:
 
 sonar-scanner:
   stage: sonar
+  image:
+    name: sonarsource/sonar-scanner-cli:4.3
+    entrypoint: [""]
+  services: []
   script:
     - ./build/ci/shared/jobs/sonar-scanner.sh
   variables:

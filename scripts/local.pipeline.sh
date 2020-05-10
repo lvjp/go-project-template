@@ -78,6 +78,11 @@ dockerRunGolang() {
 ./build/ci/shared/jobs/go-golangci-lint.sh
 ./build/ci/shared/jobs/go-lint.sh
 
-./build/ci/shared/jobs/sonar-scanner.sh
+dockerRun \
+  --entrypoint bash \
+  --env "SONAR_TOKEN=${SONAR_TOKEN:-}" \
+  sonarsource/sonar-scanner-cli:4.3 \
+  ./build/ci/shared/jobs/sonar-scanner.sh \
+  -Dsonar.branch.name=local
 
 echo Done
