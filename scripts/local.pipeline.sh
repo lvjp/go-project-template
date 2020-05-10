@@ -75,14 +75,9 @@ dockerRunGolang() {
 ./build/ci/shared/jobs/go-fmt.sh
 ./build/ci/shared/jobs/go-vet.sh
 
-dockerRunCached golangci/golangci-lint:v1.23.8-alpine ./build/ci/shared/jobs/go-golangci-lint.sh
-dockerRunCached --entrypoint sh registry.gitlab.com/lvjp/docker-golint:alpine ./build/ci/shared/jobs/go-lint.sh
+./build/ci/shared/jobs/go-golangci-lint.sh
+./build/ci/shared/jobs/go-lint.sh
 
-dockerRun \
-  --entrypoint bash \
-  --env "SONAR_TOKEN=${SONAR_TOKEN:-}" \
-  sonarsource/sonar-scanner-cli:4.3 \
-  ./build/ci/shared/jobs/sonar-scanner.sh \
-  -Dsonar.branch.name=local
+./build/ci/shared/jobs/sonar-scanner.sh
 
 echo Done

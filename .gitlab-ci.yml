@@ -71,21 +71,11 @@ go:fmt:
 go:golangci-lint:
   stage: check
   extends: .go
-  image: golangci/golangci-lint:v1.23.8-alpine
-  services: []
-  before_script:
-    - mkdir -p .cache/go
   script:
     - ./build/ci/shared/jobs/go-golangci-lint.sh
-  variables:
-    GOPATH: ${CI_PROJECT_DIR}/.cache/go
 
 go:lint:
   stage: check
-  image:
-    name: registry.gitlab.com/lvjp/docker-golint:alpine
-    entrypoint: [""]
-  services: []
   script:
     - ./build/ci/shared/jobs/go-lint.sh
   allow_failure: true
@@ -103,10 +93,6 @@ go:test:
 
 sonar-scanner:
   stage: sonar
-  image:
-    name: sonarsource/sonar-scanner-cli:4.3
-    entrypoint: [""]
-  services: []
   script:
     - ./build/ci/shared/jobs/sonar-scanner.sh
   variables:

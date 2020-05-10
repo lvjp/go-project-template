@@ -21,4 +21,6 @@ cd "$(realpath "$(dirname "$0")/../../../..")"
 
 . ./build/ci/shared/scripts/init.sh
 
-golint -set_exit_status ./...
+./build/ci/shared/scripts/docker.sh \
+  registry.gitlab.com/lvjp/docker-golint:alpine \
+  -set_exit_status ./...

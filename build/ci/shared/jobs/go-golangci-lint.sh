@@ -20,6 +20,8 @@ set -o nounset
 cd "$(realpath "$(dirname "$0")/../../../..")"
 
 . ./build/ci/shared/scripts/init.sh
+. ./build/ci/shared/scripts/go.wrapper.sh
 
-golangci-lint --version
-golangci-lint run
+_goFree \
+  golangci/golangci-lint:v1.23.8-alpine \
+  golangci-lint run

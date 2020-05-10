@@ -3,6 +3,7 @@
 
 # Sonar scaner
 /.scannerwork/
+/.sonar/
 
 # Some cache
 /.cache/

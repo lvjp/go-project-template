@@ -33,6 +33,7 @@ if [ "${PI_PLATFORM}" = "localhost" ]; then
 fi
 
 docker run \
+  --rm \
   --mount "type=bind,src=${PWD},dst=/work" \
   --workdir /work \
   "$@"

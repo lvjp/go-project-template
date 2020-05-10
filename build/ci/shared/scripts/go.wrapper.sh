@@ -17,12 +17,14 @@
 set -o errexit
 set -o nounset
 
-_goWrapper() {
+_goFree() {
   ./build/ci/shared/scripts/docker.sh \
     --env XDG_CACHE_HOME=/work/.cache \
     --env GOPATH=/work/.cache/go \
-    golang:1.14.2-buster \
     "$@"
+}
+_goWrapper() {
+  _goFree golang:1.14.2-buster "$@"
 }
 
 _go() {
